@@ -30,5 +30,4 @@ public class WordsDBHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-
 }

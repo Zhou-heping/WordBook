@@ -2,7 +2,7 @@ package com.example.wordbook.Model;
 
 import android.provider.BaseColumns;
 
-// Word表共4个字段：_ID(从接口BaseColumns而来)、word、meaning、sample
+// words表共4个字段：_ID(从接口BaseColumns而来)、word、meaning、sample
 public class Words {
     public Words(){
 
