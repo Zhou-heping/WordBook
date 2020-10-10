@@ -9,6 +9,8 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TableLayout;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
         //对话框注册
         //暂时省略
         //菜单注册，上下文菜单，
-        ListView list = (ListView) findViewById(R.id.lstWords);
+        ListView list = (ListView) findViewById(R.id.listWords);
         registerForContextMenu(list);
         //创建SQLiteOpenHelper对象，注意第一次运行时，此时数据库并没有被创建
         wordsDBHelper = new WordsDBHelper(this);
@@ -46,6 +48,39 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
         setWordsListView(items);
 
     }
+
+    //选项菜单的创建和其选项的动作
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        switch (id) {
+            case R.id.action_search:
+                //查找
+                SearchDialog();
+                return true;
+            case R.id.action_insert:
+                //新增单词
+                InsertDialog();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+
+
+
+
 
     //当用户在单词详细Fragment中单击时回调此函数
     public void onWordDetailClick(Uri uri) {
@@ -63,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
             ChangeWordDetailFragment(id);
         } else {
             Intent intent = new Intent(MainActivity.this, WordDetailActivity.class);
-            intent.putExtra(WordDetailFragment.ARG_ID, id);
+            intent.putExtra(WordDetailFragment.ARG_ID, id);//传递数据，将id传给WordDetailActivity并显示内容
             startActivity(intent);
         }
     }
