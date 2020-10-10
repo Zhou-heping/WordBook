@@ -1,4 +1,4 @@
-package com.example.wordbook.Model;
+package com.example.wordbook.Methods;
 
 import android.app.Application;
 import android.content.Context;
@@ -15,5 +15,4 @@ public class WordsApplication extends Application {
         super.onCreate();
         WordsApplication.context = getApplicationContext();
     }
-    //其他代码
 }
