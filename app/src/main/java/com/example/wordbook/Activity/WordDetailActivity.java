@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.wordbook.Fragment.WordDetailFragment;
-import com.example.wordbook.R;
 public class WordDetailActivity extends AppCompatActivity
         implements WordDetailFragment.OnFragmentInteractionListener{
     @Override
