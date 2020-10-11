@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,20 +33,10 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //相关组件的注册和使用（button，EextView,EditText）
-        //展示省略
-        //对话框注册
-        //暂时省略
-        //菜单注册，上下文菜单，
-        ListView list = (ListView) findViewById(R.id.listWords);
-        registerForContextMenu(list);
+        //相关组件的注册和使用（button，EextView,EditText）已经在fragment中实现，只需要加载主页面
+
         //创建SQLiteOpenHelper对象，注意第一次运行时，此时数据库并没有被创建
         wordsDBHelper = new WordsDBHelper(this);
-        //在列表显示全部单词
-
-
-        ArrayList<Map<String, String>> items=getAll();
-        setWordsListView(items);
 
     }
 
@@ -59,15 +50,12 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_search:
-                //查找
+            case R.id.action_search: //查找
                 SearchDialog();
                 return true;
-            case R.id.action_insert:
-                //新增单词
+
+            case R.id.action_insert://新增单词
                 InsertDialog();
                 return true;
         }
@@ -75,28 +63,23 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
     }
 
 
-
-
-
-
-
-
-
-    //当用户在单词详细Fragment中单击时回调此函数
+    //当用户在单词详细Fragment中单击时回调此函数,空实现
     public void onWordDetailClick(Uri uri) {
 
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        wordsDBHelper.close();
+        wordsDBHelper.close();//关闭数据库
     }
+
     //当用户在单词列表Fragment中单击某个单词时回调此函数,判断如果横屏的话，则需要在右侧单词详细Fragment中显示
     @Override
     public void onWordItemClick(String id) {
         if (isLand()) {
-            ChangeWordDetailFragment(id);
-        } else {
+            ChangeWordDetailFragment(id);//如果是横屏，则将单词详细fragment加入该activity，并通过id显示其内容
+        }
+        else {//为竖屏，当点击单词后，需要进行页面的跳转，即跳到新的WordDetailActivity，并将id传过去，用于显示该id下的单词详细信息
             Intent intent = new Intent(MainActivity.this, WordDetailActivity.class);
             intent.putExtra(WordDetailFragment.ARG_ID, id);//传递数据，将id传给WordDetailActivity并显示内容
             startActivity(intent);
@@ -110,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
 
     @Override
     public void onUpdateDialog(String strId) {
-        WordsDB wordsDB = WordsDB.getWordsDB();
+        WordsDB wordsDB = WordsDB.getWordsDB();//能否实例化成功，如果能，则继续下面的操作
         if (wordsDB != null && strId != null) {
             WordDescription wordDescription = wordsDB.getSingleWord(strId);
             if (wordDescription != null) {
@@ -119,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
         }
     }
 
-    private boolean isLand() {
+    private boolean isLand() {//判断是否为横屏
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             return true;
         }
@@ -128,11 +111,12 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
 
     private void ChangeWordDetailFragment(String id) {
         Bundle arguments = new Bundle();
-        arguments.putString(WordDetailFragment.ARG_ID, id);
+        arguments.putString(WordDetailFragment.ARG_ID, id);//传递数据id
         Log.v("查看id:", id);
         WordDetailFragment fragment = new WordDetailFragment();
         fragment.setArguments(arguments);
-        getFragmentManager().beginTransaction().replace(R.id.worddetail, fragment).commit();
+        //getFragmentManager()报错--》解决方案改为 getSupportFragmentManager()
+        getSupportFragmentManager().beginTransaction().replace(R.id.worddetail, fragment).commit();
 
     }
 
@@ -214,9 +198,8 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String txtSearchWord = ((EditText) tableLayout.findViewById(R.id.txtSearchWord))
+                        String txtSearchWord = ((EditText) tableLayout.findViewById(R.id.txtSearchWord))//从searchterm中获得txtSearchWord
                                 .getText().toString();
-                        //单词已经插入到数据库，更新显示列表
                         RefreshWordItemFragment(txtSearchWord);
                     }
                 })
@@ -230,16 +213,16 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
                 .show();//显示对话框
     }
     private void RefreshWordItemFragment() {
-        WordItemFragment wordItemFragment = (WordItemFragment) getFragmentManager()
-                .findFragmentById(R.id.wordslist);
+        WordItemFragment wordItemFragment = (WordItemFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.wordslist);//R.id.wordslist即WordItemFragment的总布局id
         wordItemFragment.refreshWordsList();
     }
 
     //更新单词列表
 
     private void RefreshWordItemFragment(String strWord) {
-        WordItemFragment wordItemFragment = (WordItemFragment) getFragmentManager()
-                .findFragmentById(R.id.wordslist);
+        WordItemFragment wordItemFragment = (WordItemFragment) getSupportFragmentManager()//增加了Support，根据实际情况修改
+                .findFragmentById(R.id.wordslist);//R.id.wordslist即WordItemFragment的总布局id
         wordItemFragment.refreshWordsList(strWord);
     }
 }

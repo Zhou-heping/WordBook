@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.wordbook.Fragment.WordDetailFragment;
+
 public class WordDetailActivity extends AppCompatActivity
         implements WordDetailFragment.OnFragmentInteractionListener{
     @Override
@@ -21,7 +22,7 @@ public class WordDetailActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             WordDetailFragment detailFragment = new WordDetailFragment();
             detailFragment.setArguments(getIntent().getExtras());
-            getFragmentManager()
+            getSupportFragmentManager()
                     .beginTransaction()
                     .add(android.R.id.content, detailFragment)
                     .commit();
@@ -29,5 +30,7 @@ public class WordDetailActivity extends AppCompatActivity
     }
 
     @Override
-    public void onWordDetailClick(Uri uri) {  }
+    public void onWordDetailClick(Uri uri) {
+        
+    }
 }
