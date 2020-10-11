@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/wordslist"
     tools:context=".Fragment.WordItemFragment">
+    <!--
     <ListView
         android:id="@+id/listWords"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>
-
+    -->
 
 </androidx.core.widget.NestedScrollView>

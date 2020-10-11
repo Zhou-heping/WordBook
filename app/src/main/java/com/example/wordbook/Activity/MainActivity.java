@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
         WordDetailFragment fragment = new WordDetailFragment();
         fragment.setArguments(arguments);
         //getFragmentManager()报错--》解决方案改为 getSupportFragmentManager()
-        getSupportFragmentManager().beginTransaction().replace(R.id.worddetail, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.wordDetail, fragment).commit();
 
     }
 
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
     }
     private void RefreshWordItemFragment() {
         WordItemFragment wordItemFragment = (WordItemFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.wordslist);//R.id.wordslist即WordItemFragment的总布局id
+                .findFragmentById(R.id.wordsList);//R.id.wordslist即WordItemFragment的总布局id
         wordItemFragment.refreshWordsList();
     }
 
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
 
     private void RefreshWordItemFragment(String strWord) {
         WordItemFragment wordItemFragment = (WordItemFragment) getSupportFragmentManager()//增加了Support，根据实际情况修改
-                .findFragmentById(R.id.wordslist);//R.id.wordslist即WordItemFragment的总布局id
+                .findFragmentById(R.id.wordsList);//R.id.wordslist即WordItemFragment的总布局id
         wordItemFragment.refreshWordsList(strWord);
     }
 }
