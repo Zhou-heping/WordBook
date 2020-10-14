@@ -1,11 +1,12 @@
-package com.example.wordbook.Methods;
+package com.example.wordbook;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
-import com.example.wordbook.Model.WordDescription;
-import com.example.wordbook.Model.Words;
+
+import com.example.wordbook.wordcontract.Words;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,10 +14,10 @@ import java.util.Map;
 
 //实现对单词的增删改查
 public class WordsDB {
-    private static final String TAG = "myTag: ";
+    private static final String TAG = "tag";
 
-    private static WordsDBHelper wordsDBHelper;
-    private static SQLiteDatabase db;
+    private static WordsDBHelper wordsDBHelper ;
+    private static SQLiteDatabase db ;
     private static Cursor cursor;
     private static WordsDB instance = new WordsDB();
     private String sql;
@@ -30,6 +31,10 @@ public class WordsDB {
         if (wordsDBHelper != null) {
             wordsDBHelper = new WordsDBHelper(WordsApplication.getContext());
         }
+        else{
+            Log.e("else-->Context()观测：",WordsApplication.getContext()+"");
+            wordsDBHelper = new WordsDBHelper(WordsApplication.getContext());
+        }
     }
 
     public void close() {
@@ -38,7 +43,7 @@ public class WordsDB {
     }
 
     //获得某个单词的全部信息
-    public WordDescription getSingleWord(String id) {
+    public Words.WordDescription getSingleWord(String id) {
         //通过id索引从数据库中得到单词的全部信息，然后将其赋值给WordDescription。
         sql = "select * from words where _id = '" + id + "'";
         db = wordsDBHelper.getReadableDatabase();
@@ -48,16 +53,19 @@ public class WordsDB {
         String word = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_WORD));
         String meaning = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_MEANING));
         String sample = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_SAMPLE));
-
-        return new WordDescription(getId, word, meaning, sample);
+        return new Words.WordDescription(getId, word, meaning, sample);
     }
 
     //得到单词列表
     public ArrayList<Map<String, String>> getAllWords() {
         sql = "select * from words ";
+        String  s = wordsDBHelper.getDatabaseName();
+        Log.e("sqlNmame",s);
+        Log.e("db是否创建：",wordsDBHelper+"");
         db = wordsDBHelper.getReadableDatabase();
+        Log.e("获取sql权限",s);
         cursor = db.rawQuery(sql, null);
-
+         
         return ConvertCursor2WordList(cursor);
     }
 
@@ -81,6 +89,7 @@ public class WordsDB {
         sql = "insert into words(word,meaning,sample) values(?,?,?)";
         db = wordsDBHelper.getWritableDatabase();
         db.execSQL(sql, new String[]{strWord, strMeaning, strSample});
+         
     }
 
     //插入数据方法2
@@ -92,6 +101,7 @@ public class WordsDB {
         values.put(Words.Word.COLUMN_NAME_SAMPLE, strSample);
         //插入数据，并返回插入数据的主键id
         long rowId = db.insert(Words.Word.TABLE_NAME, null, values);
+         
     }
 
     //删除单词方法1
@@ -99,6 +109,7 @@ public class WordsDB {
         sql = "delete from words where  _id = '" + strId + "'";
         db = wordsDBHelper.getReadableDatabase();
         db.execSQL(sql);
+         
     }
 
     //删除单词方法2
@@ -109,6 +120,7 @@ public class WordsDB {
         // 指定占位符对应的实际参数
         String[] selectionArgs = {strId};
         db.delete(Words.Word.TABLE_NAME, selection, selectionArgs);
+         
 
     }
 
@@ -117,6 +129,7 @@ public class WordsDB {
         db = wordsDBHelper.getReadableDatabase();
         sql = "update words set word=?,meaning=?,sample=? where _id=?";
         db.execSQL(sql,new String[]{strWord, strMeaning, strSample,strId});
+         
     }
 
     //更新单词方法2
@@ -130,6 +143,7 @@ public class WordsDB {
         String selection = Words.Word._ID + " = ?";
         String[] selectionArgs = {strId};
         int count = db.update(Words.Word.TABLE_NAME,values,selection,selectionArgs);
+         
 
     }
     //查找方法1
@@ -137,6 +151,7 @@ public class WordsDB {
         db = wordsDBHelper.getReadableDatabase();
         sql = "select * from words where word like ? order by word desc";//按照降序排序查询 asc升序
         cursor = db.rawQuery(sql,new String[]{"%"+strWordSearch+"%"});
+         
         return ConvertCursor2WordList(cursor);
      }
     //查找方法2
@@ -153,6 +168,7 @@ public class WordsDB {
         String[] selectionArgs = {"%"+strWordSearch+"%"};
         cursor = db.query(Words.Word.TABLE_NAME,projection,selection,selectionArgs,
                 null,null,sortOrder);
+         
         return  ConvertCursor2WordList(cursor);
      }
 }

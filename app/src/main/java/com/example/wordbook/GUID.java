@@ -1,4 +1,4 @@
-package com.example.wordbook.Model;
+package com.example.wordbook;
 
 import java.util.UUID;
 
