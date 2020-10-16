@@ -11,6 +11,7 @@ import com.example.wordbook.wordcontract.Words;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 //实现对单词的增删改查
 public class WordsDB {
@@ -30,13 +31,8 @@ public class WordsDB {
     private WordsDB() {//不能通过外部的new实例化该类，只能通过该类的方法getWordsDB创建新的实例
         if (wordsDBHelper == null) {
             wordsDBHelper = new WordsDBHelper(WordsApplication.getContext());
-            wordsDBHelper.onUpgrade(db,1,2);
-            Log.e("if-->Context()观测：",WordsApplication.getContext()+"");
+            Log.e("WordsDBHelper观测：",wordsDBHelper.toString()+"");
         }
-        /* else{
-            Log.e("else-->Context()观测：",WordsApplication.getContext()+"");
-            wordsDBHelper = new WordsDBHelper(WordsApplication.getContext());
-        }*/
     }
 
     public void close() {
@@ -50,33 +46,32 @@ public class WordsDB {
         sql = "select * from words where _id = '" + id + "'";
         db = wordsDBHelper.getReadableDatabase();
         cursor = db.rawQuery(sql, null);
-        //  由于此处只可能得到一行，即一组的数据，因此不需要循环取出cursor中的值
-        String getId = cursor.getString(cursor.getColumnIndex(Words.Word._ID));
-        String word = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_WORD));
-        String meaning = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_MEANING));
-        String sample = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_SAMPLE));
-        return new Words.WordDescription(getId, word, meaning, sample);
+        if(cursor.moveToNext()){
+            //  由于此处只可能得到一行，即一组的数据，因此不需要循环取出cursor中的值
+            String getId = cursor.getString(cursor.getColumnIndex(Words.Word._ID));
+            String word = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_WORD));
+            String meaning = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_MEANING));
+            String sample = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_SAMPLE));
+
+            return new Words.WordDescription(getId, word, meaning, sample);
+        }
+        return new Words.WordDescription("", "", "", "");
     }
 
     //得到单词列表
     public ArrayList<Map<String, String>> getAllWords() {
         sql = "select * from words ";
-        String  s = wordsDBHelper.getDatabaseName();
-        Log.e("sqlNmame",s);
-        Log.e("db是否创建：",wordsDBHelper+"");
         db = wordsDBHelper.getReadableDatabase();
-        Log.e("获取sql权限",s);
         cursor = db.rawQuery(sql, null);
-         
         return ConvertCursor2WordList(cursor);
     }
 
     //将游标转化为单词列表(即解析游标)
     private ArrayList<Map<String, String>> ConvertCursor2WordList(Cursor cursor) {
         ArrayList<Map<String, String>> array = new ArrayList<Map<String, String>>();
-        Map<String, String> info = new HashMap<String, String>();
+
         while (cursor.moveToNext()) {//循环取出游标存储的数据
-            info.clear();
+            Map<String, String> info = new HashMap<String, String>();
             info.put(Words.Word._ID, cursor.getString(cursor.getColumnIndex(Words.Word._ID)));
             info.put(Words.Word.COLUMN_NAME_WORD, cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_WORD)));
             info.put(Words.Word.COLUMN_NAME_MEANING, cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_MEANING)));
@@ -88,16 +83,20 @@ public class WordsDB {
 
     //增加单词方法1
     public void InsertUserSql(String strWord, String strMeaning, String strSample) {
-        sql = "insert into words(word,meaning,sample) values(?,?,?)";
+        sql = "insert into words(_id,word,meaning,sample) values(?,?,?,?)";
+
+        String id = GUID.getGUID();
         db = wordsDBHelper.getWritableDatabase();
-        db.execSQL(sql, new String[]{strWord, strMeaning, strSample});
+        db.execSQL(sql, new String[]{id,strWord, strMeaning, strSample});
          
     }
 
     //插入数据方法2
     public void Insert(String strWord, String strMeaning, String strSample) {
         db = wordsDBHelper.getWritableDatabase();
+        String id = GUID.getGUID();
         ContentValues values = new ContentValues();
+        values.put(Words.Word._ID, id);
         values.put(Words.Word.COLUMN_NAME_WORD, strWord);
         values.put(Words.Word.COLUMN_NAME_MEANING, strMeaning);
         values.put(Words.Word.COLUMN_NAME_SAMPLE, strSample);

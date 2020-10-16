@@ -28,7 +28,6 @@ public class WordItemFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("context观测：",""+getActivity());
         //刷新单词列表
         refreshWordsList();
     }
@@ -54,7 +53,8 @@ public class WordItemFragment extends ListFragment {
         return view;
     }
 
-    public interface OnFragmentInteractionListener {//在实际的activity实现这些方法
+    //Fragment所在的Activity必须实现该接口，通过该接口Fragment和Activity可以进行通信
+    public interface OnFragmentInteractionListener {
 
         public void onWordItemClick(String id);
 
