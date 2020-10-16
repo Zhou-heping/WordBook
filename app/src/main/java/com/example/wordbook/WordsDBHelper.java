@@ -4,6 +4,7 @@ package com.example.wordbook;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.wordbook.wordcontract.Words;
 
@@ -16,6 +17,7 @@ public class WordsDBHelper extends SQLiteOpenHelper {
 
     public WordsDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        Log.i("数据库创建成功","");
     }
 
     //创建数据库语句
@@ -32,7 +34,7 @@ public class WordsDBHelper extends SQLiteOpenHelper {
     //创建数据库
     public void onCreate(SQLiteDatabase sqLiteDatabase){
         sqLiteDatabase.execSQL(SQL_CREATE_DATABASE);
-        System.out.println("表格创建成功");
+        Log.i("建表成功？", sqLiteDatabase.toString());
     }
     //删除数据库
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {

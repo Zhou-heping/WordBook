@@ -18,7 +18,6 @@ import androidx.fragment.app.ListFragment;
 import com.example.wordbook.WordsDB;
 import com.example.wordbook.R;
 import com.example.wordbook.wordcontract.Words;
-
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -49,13 +48,14 @@ public class WordItemFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         //为列表注册上下文菜单
-        ListView mListView = (ListView) view.findViewById(android.R.id.list);//安卓自带的list,android.R.id.list
+        ListView mListView = (ListView) view.findViewById(android.R.id.list);//寻找list,android.R.id.list，定义组件名字listview, android：list
         //mListView.setOnCreateContextMenuListener(this);
         registerForContextMenu(mListView);
         return view;
     }
 
     public interface OnFragmentInteractionListener {//在实际的activity实现这些方法
+
         public void onWordItemClick(String id);
 
         public void onDeleteDialog(String strId);
@@ -68,9 +68,10 @@ public class WordItemFragment extends ListFragment {
         WordsDB wordsDB = WordsDB.getWordsDB();
         if (wordsDB != null) {
             ArrayList<Map<String, String>> items = wordsDB.getAllWords();
-            if(items == null){
+            if(items.isEmpty()){
                 wordsDB.InsertUserSql("Apple","苹果","THSI IS A APPLE");
                 items = wordsDB.getAllWords();
+                Log.e("items-->",items+"");
             }
             Log.e("items",items+"");
             SimpleAdapter adapter = new SimpleAdapter(getActivity(), items, R.layout.item,
@@ -110,12 +111,11 @@ public class WordItemFragment extends ListFragment {
         }
     }
 
-
     //创建上下文菜单，来源contextmenu_wordslistview，并添加菜单项删除和更新
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getActivity().getMenuInflater().inflate(R.menu.contextmenu_wordslistview, menu);//将menu作为所在Activity的上下文菜单
+        getActivity().getMenuInflater().inflate(R.menu.contextmenu_wordslistview, menu);
     }
     //对上下文菜单项设置点击动作
     @Override
@@ -131,7 +131,7 @@ public class WordItemFragment extends ListFragment {
             case R.id.action_delete:
                 //删除单词
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                itemView = info.targetView;
+                itemView = info.targetView;//设置该view在哪个蒙层上显示
                 textId = (TextView) itemView.findViewById(R.id.textId);
                 if (textId != null) {
                     String strId = textId.getText().toString();

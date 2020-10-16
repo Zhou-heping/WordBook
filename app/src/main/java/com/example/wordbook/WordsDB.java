@@ -28,13 +28,15 @@ public class WordsDB {
     }
 
     private WordsDB() {//不能通过外部的new实例化该类，只能通过该类的方法getWordsDB创建新的实例
-        if (wordsDBHelper != null) {
+        if (wordsDBHelper == null) {
             wordsDBHelper = new WordsDBHelper(WordsApplication.getContext());
+            wordsDBHelper.onUpgrade(db,1,2);
+            Log.e("if-->Context()观测：",WordsApplication.getContext()+"");
         }
-        else{
+        /* else{
             Log.e("else-->Context()观测：",WordsApplication.getContext()+"");
             wordsDBHelper = new WordsDBHelper(WordsApplication.getContext());
-        }
+        }*/
     }
 
     public void close() {
