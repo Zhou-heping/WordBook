@@ -6,7 +6,7 @@
     <uses-permission
         android:name="android.permission.WRITE_MEDIA_STORAGE"
         tools:ignore="ProtectedPermissions" />
-
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission> <!-- //网络访问权限允许 -->
     <application
         android:name=".Methods.WordsApplication"
         android:allowBackup="true"
@@ -15,21 +15,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:name">
+        <!-- android:usesCleartextTraffic="true" //访问网络权限设置方法2，可代替android:networkSecurityConfig="@xml/network_security_config"-->
+
         <provider
             android:name=".WordsProvider"
             android:authorities="com.example.wordbook.wordsprovider"
             android:enabled="true"
-            android:exported="true"></provider>
+            android:exported="true" />
 
         <activity
             android:name=".Activity.MainActivity"
             android:configChanges="orientation"
-            android:label="单词本"
+            android:label="@string/wordbook"
             android:screenOrientation="sensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -39,12 +41,15 @@
             android:parentActivityName=".Activity.MainActivity" />
         <activity
             android:name=".Activity.UseHelpActivity"
-            android:label="help"
+            android:label="@string/help"
             android:parentActivityName=".Activity.MainActivity" />
         <activity
             android:name=".Activity.RemberWordActivity"
             android:label="@string/RemenberWord"
             android:parentActivityName=".Activity.MainActivity" />
+        <activity android:name=".Activity.findWordsActivity"
+            android:label="@string/youdaoTranslation"
+            android:parentActivityName=".Activity.MainActivity"/>
     </application>
 
 </manifest>

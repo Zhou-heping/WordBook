@@ -5,16 +5,19 @@
         android:layout_centerInParent="true"
         android:onClick="onContextItemSelected"
         android:textSize="30sp"
+        android:orderInCategory="100"
         android:title="@string/delete"></item>
     <item
         android:id="@+id/action_update"
         android:layout_centerInParent="true"
         android:onClick="onContextItemSelected"
         android:textSize="30sp"
+        android:orderInCategory="100"
         android:title="@string/update"></item>
     <item
         android:id="@+id/action_remenber"
         android:title="@string/addToNotebook"
+        android:orderInCategory="100"
         android:layout_centerInParent="true"
         android:textSize="30sp"
         android:onClick="onContextItemSelected"/>

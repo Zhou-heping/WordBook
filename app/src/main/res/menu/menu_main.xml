@@ -20,6 +20,13 @@
         android:onClick="onOptionsItemSelected"/>
 
     <item
+        android:id="@+id/action_connectToYoudaoAPI"
+        android:title="@string/connectToYoudaoAPI"
+        app:showAsAction="never"
+        android:onClick="onOptionsItemSelected"
+        />
+
+    <item
         android:id="@+id/action_help"
         android:title="@string/help"
         app:showAsAction="never"

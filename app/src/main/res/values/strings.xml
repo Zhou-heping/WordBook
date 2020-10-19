@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">WordBook</string>
+    <string name="wordbook">单词本</string>
     <string name="insert">新增</string>
     <string name="search">搜索</string>
     <string name="delete">删除</string>
@@ -10,6 +11,8 @@
     <string name="HelpItem2">2.生词本，说明如下:......</string>
     <string name="HelpItem3">3.调用有道翻译api,说明如下:......</string>
     <string name="addToNotebook">添加到生词本</string>
+    <string name="connectToYoudaoAPI">有道查询</string>
+    <string name="youdaoTranslation">有道翻译</string>
     <string name="RemenberWord">记单词（生词本）</string>
 
 </resources>

@@ -120,6 +120,7 @@ public class RemenberWordFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Toast.makeText(getActivity(), "您离成功又进了一步了", Toast.LENGTH_SHORT).show();
+                textView.setText(info.get(Words.Word.COLUMN_NAME_WORD));
                 editText.setText("");
             }
         }).show();
