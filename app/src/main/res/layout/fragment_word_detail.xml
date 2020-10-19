@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/wordsDetail"
     android:name="com.example.wordbook.Fragment.WordDetailFragment"
@@ -8,12 +9,12 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     tools:context=".Fragment.WordDetailFragment">
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/word"
@@ -33,4 +34,4 @@
             android:layout_height="wrap_content"
             android:textSize="30dp"/>
     </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout >

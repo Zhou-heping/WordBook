@@ -1,24 +1,22 @@
-package com.example.wordbook;
+package com.example.wordbook.Methods;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 
-import com.example.wordbook.wordcontract.Words;
+import com.example.wordbook.wordModel.Words;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 //实现对单词的增删改查
 public class WordsDB {
     private static final String TAG = "tag";
 
-    private static WordsDBHelper wordsDBHelper ;
-    private static SQLiteDatabase db ;
+    private static WordsDBHelper wordsDBHelper;
+    private static SQLiteDatabase db;
     private static Cursor cursor;
     private static WordsDB instance = new WordsDB();
     private String sql;
@@ -31,7 +29,6 @@ public class WordsDB {
     private WordsDB() {//不能通过外部的new实例化该类，只能通过该类的方法getWordsDB创建新的实例
         if (wordsDBHelper == null) {
             wordsDBHelper = new WordsDBHelper(WordsApplication.getContext());
-            Log.e("WordsDBHelper观测：",wordsDBHelper.toString()+"");
         }
     }
 
@@ -46,7 +43,7 @@ public class WordsDB {
         sql = "select * from words where _id = '" + id + "'";
         db = wordsDBHelper.getReadableDatabase();
         cursor = db.rawQuery(sql, null);
-        if(cursor.moveToNext()){
+        if (cursor.moveToNext()) {
             //  由于此处只可能得到一行，即一组的数据，因此不需要循环取出cursor中的值
             String getId = cursor.getString(cursor.getColumnIndex(Words.Word._ID));
             String word = cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_WORD));
@@ -65,6 +62,13 @@ public class WordsDB {
         cursor = db.rawQuery(sql, null);
         return ConvertCursor2WordList(cursor);
     }
+    //得到所有生词
+    public ArrayList<Map<String, String>> getRemenberAllWords(){
+        sql = "select * from words where state = '1' ";
+        db = wordsDBHelper.getReadableDatabase();
+        cursor = db.rawQuery(sql, null);
+        return ConvertCursor2WordList(cursor);
+    }
 
     //将游标转化为单词列表(即解析游标)
     private ArrayList<Map<String, String>> ConvertCursor2WordList(Cursor cursor) {
@@ -76,6 +80,7 @@ public class WordsDB {
             info.put(Words.Word.COLUMN_NAME_WORD, cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_WORD)));
             info.put(Words.Word.COLUMN_NAME_MEANING, cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_MEANING)));
             info.put(Words.Word.COLUMN_NAME_SAMPLE, cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_SAMPLE)));
+            info.put(Words.Word.COLUMN_NAME_STATE, cursor.getString(cursor.getColumnIndex(Words.Word.COLUMN_NAME_STATE)));
             array.add(info);
         }
         return array;
@@ -87,8 +92,8 @@ public class WordsDB {
 
         String id = GUID.getGUID();
         db = wordsDBHelper.getWritableDatabase();
-        db.execSQL(sql, new String[]{id,strWord, strMeaning, strSample});
-         
+        db.execSQL(sql, new String[]{id, strWord, strMeaning, strSample});
+
     }
 
     //插入数据方法2
@@ -102,7 +107,7 @@ public class WordsDB {
         values.put(Words.Word.COLUMN_NAME_SAMPLE, strSample);
         //插入数据，并返回插入数据的主键id
         long rowId = db.insert(Words.Word.TABLE_NAME, null, values);
-         
+
     }
 
     //删除单词方法1
@@ -110,27 +115,25 @@ public class WordsDB {
         sql = "delete from words where  _id = '" + strId + "'";
         db = wordsDBHelper.getReadableDatabase();
         db.execSQL(sql);
-         
+
     }
 
     //删除单词方法2
     public void Delete(String strId) {
         db = wordsDBHelper.getReadableDatabase();
         // 定义where子句
-        String selection = Words.Word._ID+"=?";
+        String selection = Words.Word._ID + "=?";
         // 指定占位符对应的实际参数
         String[] selectionArgs = {strId};
         db.delete(Words.Word.TABLE_NAME, selection, selectionArgs);
-         
-
     }
 
     //更新单词方法1
     public void UpdateUseSql(String strId, String strWord, String strMeaning, String strSample) {
         db = wordsDBHelper.getReadableDatabase();
         sql = "update words set word=?,meaning=?,sample=? where _id=?";
-        db.execSQL(sql,new String[]{strWord, strMeaning, strSample,strId});
-         
+        db.execSQL(sql, new String[]{strWord, strMeaning, strSample, strId});
+
     }
 
     //更新单词方法2
@@ -143,18 +146,25 @@ public class WordsDB {
         values.put(Words.Word.COLUMN_NAME_SAMPLE, strSample);
         String selection = Words.Word._ID + " = ?";
         String[] selectionArgs = {strId};
-        int count = db.update(Words.Word.TABLE_NAME,values,selection,selectionArgs);
-         
+        int count = db.update(Words.Word.TABLE_NAME, values, selection, selectionArgs);
 
+
+    }
+    //更新单词状态
+    public void UpdateState(String strId){
+        db = wordsDBHelper.getReadableDatabase();
+        sql = "update words set state=? where _id=?";
+        String state = "1";
+        db.execSQL(sql, new String[]{state, strId});
     }
     //查找方法1
     public ArrayList<Map<String, String>> SearchUseSql(String strWordSearch) {
         db = wordsDBHelper.getReadableDatabase();
         sql = "select * from words where word like ? order by word desc";//按照降序排序查询 asc升序
-        cursor = db.rawQuery(sql,new String[]{"%"+strWordSearch+"%"});
-         
+        cursor = db.rawQuery(sql, new String[]{"%" + strWordSearch + "%"});
         return ConvertCursor2WordList(cursor);
-     }
+    }
+
     //查找方法2
     public ArrayList<Map<String, String>> Search(String strWordSearch) {
         db = wordsDBHelper.getReadableDatabase();
@@ -164,12 +174,11 @@ public class WordsDB {
                 Words.Word.COLUMN_NAME_MEANING,
                 Words.Word.COLUMN_NAME_SAMPLE
         };
-        String sortOrder =    Words.Word.COLUMN_NAME_WORD + " DESC";
+        String sortOrder = Words.Word.COLUMN_NAME_WORD + " DESC";
         String selection = Words.Word.COLUMN_NAME_WORD + " LIKE ?";
-        String[] selectionArgs = {"%"+strWordSearch+"%"};
-        cursor = db.query(Words.Word.TABLE_NAME,projection,selection,selectionArgs,
-                null,null,sortOrder);
-         
-        return  ConvertCursor2WordList(cursor);
-     }
+        String[] selectionArgs = {"%" + strWordSearch + "%"};
+        cursor = db.query(Words.Word.TABLE_NAME, projection, selection, selectionArgs,
+                null, null, sortOrder);
+        return ConvertCursor2WordList(cursor);
+    }
 }

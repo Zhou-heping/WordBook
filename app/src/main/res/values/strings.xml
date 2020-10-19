@@ -4,5 +4,12 @@
     <string name="search">搜索</string>
     <string name="delete">删除</string>
     <string name="update">更新</string>
+    <string name="help">使用指南</string>
+    <string name="UseHelp">使用帮助：</string>
+    <string name="HelpItem1">1.wordbook支持单词的增删改查，详细说明如下：......</string>
+    <string name="HelpItem2">2.生词本，说明如下:......</string>
+    <string name="HelpItem3">3.调用有道翻译api,说明如下:......</string>
+    <string name="addToNotebook">添加到生词本</string>
+    <string name="RemenberWord">记单词（生词本）</string>
 
 </resources>

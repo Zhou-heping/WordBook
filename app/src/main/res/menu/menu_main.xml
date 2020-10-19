@@ -5,14 +5,24 @@
     tools:context="com.example.wordbook.Activity.MainActivity">
     <item
         android:id="@+id/action_search"
-        android:orderInCategory="100"
         android:title="@string/search"
         app:showAsAction="never"
         android:onClick="onOptionsItemSelected"/>
     <item
         android:id="@+id/action_insert"
-        android:orderInCategory="100"
         android:title="@string/insert"
         app:showAsAction="never"
         android:onClick="onOptionsItemSelected"/>
+    <item
+        android:id="@+id/action_Remenber"
+        android:title="@string/RemenberWord"
+        app:showAsAction="never"
+        android:onClick="onOptionsItemSelected"/>
+
+    <item
+        android:id="@+id/action_help"
+        android:title="@string/help"
+        app:showAsAction="never"
+        android:onClick="onOptionsItemSelected"
+        />
 </menu>

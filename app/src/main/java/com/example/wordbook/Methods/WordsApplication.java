@@ -1,4 +1,4 @@
-package com.example.wordbook;
+package com.example.wordbook.Methods;
 
 import android.app.Application;
 import android.content.Context;

@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
-import com.example.wordbook.WordsDB;
+import com.example.wordbook.Methods.WordsDB;
 import com.example.wordbook.R;
-import com.example.wordbook.wordcontract.Words;
+import com.example.wordbook.wordModel.Words;
 
 public class WordDetailFragment extends Fragment {
     public static final String ARG_ID = "id";
