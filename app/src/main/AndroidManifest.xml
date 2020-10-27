@@ -6,21 +6,21 @@
     <uses-permission
         android:name="android.permission.WRITE_MEDIA_STORAGE"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission> <!-- //网络访问权限允许 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".Methods.WordsApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:name">
-        <!-- android:usesCleartextTraffic="true" //访问网络权限设置方法2，可代替android:networkSecurityConfig="@xml/network_security_config"-->
-
+        <!-- android:usesCleartextTraffic="true" //访问网络权限设置方法2，可代替android:networkSecurityConfig="@xml/network_security_config" -->
         <provider
-            android:name=".WordsProvider"
+            android:name=".Methods.WordsProvider"
             android:authorities="com.example.wordbook.wordsprovider"
             android:enabled="true"
             android:exported="true" />
@@ -32,6 +32,7 @@
             android:screenOrientation="sensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -47,9 +48,13 @@
             android:name=".Activity.RemberWordActivity"
             android:label="@string/RemenberWord"
             android:parentActivityName=".Activity.MainActivity" />
-        <activity android:name=".Activity.findWordsActivity"
+        <activity
+            android:name=".Activity.findWordsActivity"
             android:label="@string/youdaoTranslation"
-            android:parentActivityName=".Activity.MainActivity"/>
+            android:parentActivityName=".Activity.MainActivity" />
+        <activity android:name=".Activity.getContentInfoActivity"
+            android:label="@string/testContent"
+            android:parentActivityName=".Activity.MainActivity" />
     </application>
 
 </manifest>

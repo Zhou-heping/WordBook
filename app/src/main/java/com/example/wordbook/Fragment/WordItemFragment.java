@@ -13,9 +13,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.fragment.app.ListFragment;
-
 import com.example.wordbook.Methods.WordsDB;
 import com.example.wordbook.R;
 import com.example.wordbook.wordModel.Words;
@@ -79,7 +77,6 @@ public class WordItemFragment extends ListFragment {
                 items = wordsDB.getAllWords();
                 Log.e("items-->", items + "");
             }
-            //Log.e("items",items+"");
             SimpleAdapter adapter = new SimpleAdapter(getActivity(), items, R.layout.item,
                     new String[]{Words.Word._ID, Words.Word.COLUMN_NAME_WORD},
                     new int[]{R.id.textId, R.id.textViewWord});

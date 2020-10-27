@@ -17,7 +17,7 @@ public class WordsDBHelper extends SQLiteOpenHelper {
 
     public WordsDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        Log.i("数据库创建成功","");
+        //Log.i("数据库创建成功","");
     }
 
     //创建数据库语句

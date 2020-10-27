@@ -14,5 +14,5 @@
     <string name="connectToYoudaoAPI">有道查询</string>
     <string name="youdaoTranslation">有道翻译</string>
     <string name="RemenberWord">记单词（生词本）</string>
-
+    <string name="testContent">数据共享</string>
 </resources>

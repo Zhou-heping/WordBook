@@ -53,11 +53,11 @@ public class Words {
         //MIME类型
         public static final String MIME_DIR_PREFIX = "vnd.android.cursor.dir";
         public static final String MIME_ITEM_PREFIX = "vnd.android.cursor.item";
-        public static final String MINE_ITEM = "com.example.wordbook.word";
+        public static final String MINE_ITEM = "word"; //com.example.wordbook.word
 
-        // 单一数据的MIME类型字符串应该以vnd.android.cursor.item/开头
+        // "单一数据"的MIME类型字符串应该以vnd.android.cursor.item/开头
         public static final String MINE_TYPE_SINGLE = MIME_ITEM_PREFIX + "/" + MINE_ITEM;
-        // 数据集的MIME类型字符串则应该以vnd.android.cursor.dir/开头
+        // "数据集"的MIME类型字符串则应该以vnd.android.cursor.dir/开头
         public static final String MINE_TYPE_MULTIPLE = MIME_DIR_PREFIX + "/" + MINE_ITEM;
 
         public static final String PATH_SINGLE = "word/#";//单条数据的路径

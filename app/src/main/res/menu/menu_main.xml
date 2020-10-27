@@ -25,7 +25,12 @@
         app:showAsAction="never"
         android:onClick="onOptionsItemSelected"
         />
-
+    <item
+        android:id="@+id/action_getContent"
+        android:title="@string/testContent"
+        app:showAsAction="never"
+        android:onClick="onOptionsItemSelected"
+        />
     <item
         android:id="@+id/action_help"
         android:title="@string/help"
