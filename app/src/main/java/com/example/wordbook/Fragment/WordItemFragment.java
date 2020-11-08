@@ -17,7 +17,6 @@ import androidx.fragment.app.ListFragment;
 import com.example.wordbook.Methods.WordsDB;
 import com.example.wordbook.R;
 import com.example.wordbook.wordModel.Words;
-
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -64,7 +63,7 @@ public class WordItemFragment extends ListFragment {
 
         public void onUpdateDialog(String strId);
 
-         public void onAddToNotebook(String strId);
+        public void onAddToNotebook(String strId);
     }
 
     //更新单词列表，从数据库中找到所有单词，然后在列表中显示出来
