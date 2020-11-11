@@ -152,7 +152,7 @@ public class WordItemFragment extends ListFragment {
                 }
                 break;
 
-            case R.id.action_remenber://修改数据库，在
+            case R.id.action_remenber://生词记忆
                 //添加到生词本
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 itemView = info.targetView;//引导蒙层在哪个view上显示

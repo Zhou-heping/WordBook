@@ -147,8 +147,6 @@ public class WordsDB {
         String selection = Words.Word._ID + " = ?";
         String[] selectionArgs = {strId};
         int count = db.update(Words.Word.TABLE_NAME, values, selection, selectionArgs);
-
-
     }
     //更新单词状态
     public void UpdateState(String strId){

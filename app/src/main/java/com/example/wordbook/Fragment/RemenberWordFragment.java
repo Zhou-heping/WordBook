@@ -94,6 +94,9 @@ public class RemenberWordFragment extends Fragment {
         if (count < 4) {
 
             wordscount = items.size();
+            if(items.size()==0){
+
+            }
             Log.e("生词数量：", wordscount + "");
             number = (int) (wordscount * Math.random());
             info = items.get(number);

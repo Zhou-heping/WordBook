@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
     //当用户在单词列表Fragment中单击某个单词时回调此函数,判断如果横屏的话，则需要在右侧单词详细Fragment中显示
@@ -170,11 +169,15 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
                         String strWord = ((EditText) tableLayout.findViewById(R.id.txtWord)).getText().toString();
                         String strMeaning = ((EditText) tableLayout.findViewById(R.id.txtMeaning)).getText().toString();
                         String strSample = ((EditText) tableLayout.findViewById(R.id.txtSample)).getText().toString();
-                        //使用Sql语句插入
-                        WordsDB wordsDB = WordsDB.getWordsDB();
-                        wordsDB.Insert(strWord, strMeaning, strSample);
-                        //单词已经插入到数据库，更新显示列表
-                        RefreshWordItemFragment();
+                        if(strWord.equals("")||strWord.equals(" ")){
+                            Toast.makeText(getApplicationContext(),"新增失败，单词只能由英文字母组成，不能有空格或者为空",Toast.LENGTH_SHORT).show();
+                        }else {
+                            //使用Sql语句插入
+                            WordsDB wordsDB = WordsDB.getWordsDB();
+                            wordsDB.Insert(strWord, strMeaning, strSample);
+                            //单词已经插入到数据库，更新显示列表
+                            RefreshWordItemFragment();
+                        }
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
@@ -217,12 +220,16 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
                         String strNewWord = ((EditText) tableLayout.findViewById(R.id.txtWord)).getText().toString();
                         String strNewMeaning = ((EditText) tableLayout.findViewById(R.id.txtMeaning)).getText().toString();
                         String strNewSample = ((EditText) tableLayout.findViewById(R.id.txtSample)).getText().toString();
-                        //更新数据库的信息
-                        WordsDB wordsDB = WordsDB.getWordsDB();
-                        wordsDB.UpdateUseSql(strId, strNewWord, strNewMeaning, strNewSample);
-                        Log.e("", "");
-                        //单词已经更新，更新显示列表
-                        RefreshWordItemFragment();
+
+                        if(strNewWord.equals("")||strNewWord.equals(" ")){
+                            Toast.makeText(getApplicationContext(),"更新失败，单词只能由英文字母组成，不能有空格或者为空",Toast.LENGTH_SHORT).show();
+                        }else {
+                            //更新数据库的信息
+                            WordsDB wordsDB = WordsDB.getWordsDB();
+                            wordsDB.UpdateUseSql(strId, strNewWord, strNewMeaning, strNewSample);
+                            //单词已经更新，更新显示列表
+                            RefreshWordItemFragment();
+                        }
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
@@ -244,6 +251,8 @@ public class MainActivity extends AppCompatActivity implements WordItemFragment.
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String txtSearchWord = ((EditText) tableLayout.findViewById(R.id.txtSearchWord))//从searchterm中获得txtSearchWord
                                 .getText().toString();
+                        //去除空格
+                        txtSearchWord = txtSearchWord.replaceAll(" ","");
                         RefreshWordItemFragment(txtSearchWord);
                     }
                 })
